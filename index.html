@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+      /* Tombol Start untuk mengatasi kebijakan browser (video tidak boleh autoplay suara) */
+      #start-button {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        padding: 10px 20px; background: #333; color: white; border-radius: 5px;
+        z-index: 999; display: none; cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="start-button">Tap to Unmute</div>
+
+    <a-scene 
+      mindar-image="imageTargetSrc: ./targets.mind;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <video id="vid" src="./video.mp4" webkit-playsinline playsinline muted loop></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        
+        <a-plane 
+          src="#vid" 
+          position="0 0 0" 
+          height="0.55" width="1" 
+          rotation="0 0 0" 
+          opacity="1">
+        </a-plane>
+        
+        </a-entity>
+    </a-scene>
+
+    <script>
+      // Script kecil untuk handle video play saat target ditemukan
+      const sceneEl = document.querySelector('a-scene');
+      const videoEl = document.querySelector('#vid');
+      const btn = document.querySelector('#start-button');
+
+      sceneEl.addEventListener('arReady', (event) => {
+        // AR siap
+      });
+
+      // Saat kartu terdeteksi kamera
+      sceneEl.addEventListener('targetFound', (event) => {
+        console.log("Kartu ditemukan");
+        videoEl.play();
+        btn.style.display = "block"; // Munculkan tombol unmute
+      });
+
+      // Saat kartu hilang dari kamera
+      sceneEl.addEventListener('targetLost', (event) => {
+        console.log("Kartu hilang");
+        videoEl.pause();
+        btn.style.display = "none";
+      });
+
+      // Handle tombol unmute
+      btn.addEventListener("click", function() {
+        videoEl.muted = false;
+        btn.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
