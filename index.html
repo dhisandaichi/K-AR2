@@ -3,18 +3,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Mendapatkan referensi elemen
+        const target = document.querySelector('#target-video');
+        const video = document.querySelector('#vid');
+
+        // Event saat gambar target ditemukan (scan berhasil)
+        target.addEventListener("targetFound", event => {
+          console.log("Target ditemukan, memutar video...");
+          video.play();
+        });
+
+        // Event saat gambar target hilang dari kamera
+        target.addEventListener("targetLost", event => {
+          console.log("Target hilang, video pause...");
+          video.pause();
+        });
+      });
+    </script>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      
       <a-assets>
-        <a-asset-item id="logo3D" src="plusgrouphor.glb"></a-asset-item>
+        <video id="vid" src="video.mp4" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-entity gltf-model="#logo3D" rotation="0 0 0" position="0 0 0" scale="0.00001 0.00001 0.00001"></a-entity>
+      <a-entity mindar-image-target="targetIndex: 0" id="target-video">
+        <a-plane src="#vid" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
       </a-entity>
+      
     </a-scene>
   </body>
 </html>
