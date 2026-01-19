@@ -69,23 +69,8 @@
             <div class="preview-section">
                 <h2 style="text-align: center; margin-bottom: 1rem;">AR Mode Active</h2>
 
-                <div class="ar-viewer">
-                    <a-scene mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 1" color-space="sRGB"
-                        renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-                        device-orientation-permission-ui="enabled: false">
-
-                        <a-assets>
-                            <video id="arvideo" src="video.mp4" preload="auto" loop crossorigin="anonymous"></video>
-                        </a-assets>
-
-                        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-                        <a-entity mindar-image-target="targetIndex: 0">
-                            <a-video src="#arvideo" position="0 0 0" height="1" width="1.778" rotation="0 0 0">
-                            </a-video>
-                        </a-entity>
-                    </a-scene>
-                </div>
+                <!-- AR viewer container - will be populated dynamically -->
+                <div class="ar-viewer" id="arContainer"></div>
 
                 <div style="text-align: center; margin-top: 1.5rem;">
                     <p style="margin-bottom: 1rem; font-size: 1.1rem;">
@@ -108,14 +93,73 @@
         const arSection = document.getElementById('arSection');
 
         // Start AR
+        let arSceneCreated = false;
         startARBtn.addEventListener('click', () => {
             previewSection.classList.add('hidden');
             arSection.classList.remove('hidden');
 
-            // Auto-play video when AR starts
-            const arVideo = document.getElementById('arvideo');
-            if (arVideo) {
-                arVideo.play();
+            // Create AR scene only once when AR starts
+            if (!arSceneCreated) {
+                const arContainer = document.getElementById('arContainer');
+
+                // Create A-Frame scene
+                const scene = document.createElement('a-scene');
+                scene.setAttribute('mindar-image', 'imageTargetSrc: ./targets.mind; maxTrack: 1');
+                scene.setAttribute('color-space', 'sRGB');
+                scene.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights');
+                scene.setAttribute('vr-mode-ui', 'enabled: false');
+                scene.setAttribute('device-orientation-permission-ui', 'enabled: false');
+
+                // Create assets
+                const assets = document.createElement('a-assets');
+                const videoAsset = document.createElement('video');
+                videoAsset.id = 'arvideo';
+                videoAsset.src = 'video.mp4';
+                videoAsset.preload = 'auto';
+                videoAsset.loop = true;
+                videoAsset.crossOrigin = 'anonymous';
+                assets.appendChild(videoAsset);
+                scene.appendChild(assets);
+
+                // Create camera
+                const camera = document.createElement('a-camera');
+                camera.setAttribute('position', '0 0 0');
+                camera.setAttribute('look-controls', 'enabled: false');
+                scene.appendChild(camera);
+
+                // Create AR target entity
+                const entity = document.createElement('a-entity');
+                entity.setAttribute('mindar-image-target', 'targetIndex: 0');
+
+                // Create video display
+                const videoEl = document.createElement('a-video');
+                videoEl.setAttribute('src', '#arvideo');
+                videoEl.setAttribute('position', '0 0 0');
+                videoEl.setAttribute('height', '1');
+                videoEl.setAttribute('width', '1.778');
+                videoEl.setAttribute('rotation', '0 0 0');
+
+                entity.appendChild(videoEl);
+                scene.appendChild(entity);
+
+                // Add scene to container
+                arContainer.appendChild(scene);
+
+                arSceneCreated = true;
+
+                // Auto-play video after scene is ready
+                setTimeout(() => {
+                    const arVideo = document.getElementById('arvideo');
+                    if (arVideo) {
+                        arVideo.play().catch(e => console.log('Auto-play prevented:', e));
+                    }
+                }, 1000);
+            } else {
+                // If scene already exists, just play the video
+                const arVideo = document.getElementById('arvideo');
+                if (arVideo) {
+                    arVideo.play().catch(e => console.log('Auto-play prevented:', e));
+                }
             }
         });
 
