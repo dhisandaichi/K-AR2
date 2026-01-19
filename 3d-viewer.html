@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes">
+    <meta name="theme-color" content="#667eea">
+    <title>3D Model AR - Simple Version</title>
+    <link rel="stylesheet" href="simple-style.css">
+
+    <!-- MindAR & A-Frame -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="simple-index.html" class="back-button">⬅ Kembali</a>
+            <div class="page-header">
+                <h1>🎨 3D Model AR</h1>
+                <p>Tampilkan model 3D dengan rotasi otomatis</p>
+            </div>
+        </header>
+
+        <!-- Preview Section -->
+        <main class="content" id="previewSection">
+            <div class="preview-section">
+                <div style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 5rem; margin-bottom: 1rem;">🎨</div>
+                    <h2>Model 3D Siap Ditampilkan</h2>
+                    <p style="margin: 1rem 0; font-size: 1.1rem;">File: <strong>plusgroupnew.glb</strong></p>
+                    <p style="opacity: 0.9;">Model 3D akan ditampilkan dalam AR dengan rotasi otomatis</p>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>🎯 Cara Menggunakan 3D AR:</h3>
+                <ol>
+                    <li>Klik tombol "Start AR Mode" di bawah</li>
+                    <li>Izinkan akses kamera saat diminta</li>
+                    <li>Arahkan kamera ke marker (targets.mind)</li>
+                    <li>Model 3D akan muncul dengan rotasi otomatis</li>
+                    <li>Gerakkan device untuk melihat dari berbagai sudut</li>
+                </ol>
+                <button class="start-ar-button" id="startARBtn">🚀 Start AR Mode</button>
+            </div>
+        </main>
+
+        <!-- AR Section -->
+        <main class="content hidden" id="arSection">
+            <div class="preview-section">
+                <h2 style="text-align: center; margin-bottom: 1rem;">AR Mode Active</h2>
+
+                <div class="ar-viewer">
+                    <a-scene mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 1" color-space="sRGB"
+                        renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+                        device-orientation-permission-ui="enabled: false">
+
+                        <a-assets>
+                            <a-asset-item id="model3d" src="plusgroupnew.glb"></a-asset-item>
+                        </a-assets>
+
+                        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+                        <a-entity mindar-image-target="targetIndex: 0">
+                            <a-gltf-model src="#model3d" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"
+                                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+                            </a-gltf-model>
+                        </a-entity>
+                    </a-scene>
+                </div>
+
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <p style="margin-bottom: 1rem; font-size: 1.1rem;">
+                        Model 3D berputar otomatis setiap 10 detik
+                    </p>
+                    <button class="control-button" id="stopARBtn">🛑 Stop AR Mode</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>3D Model AR - Powered by MindAR & A-Frame</p>
+        </footer>
+    </div>
+
+    <script>
+        const startARBtn = document.getElementById('startARBtn');
+        const stopARBtn = document.getElementById('stopARBtn');
+        const previewSection = document.getElementById('previewSection');
+        const arSection = document.getElementById('arSection');
+
+        // Start AR
+        startARBtn.addEventListener('click', () => {
+            previewSection.classList.add('hidden');
+            arSection.classList.remove('hidden');
+        });
+
+        // Stop AR
+        stopARBtn.addEventListener('click', () => {
+            arSection.classList.add('hidden');
+            previewSection.classList.remove('hidden');
+        });
+    </script>
+</body>
+
+</html>
