@@ -14,14 +14,25 @@
 </head>
 
 <body>
+    <!-- Header Navigation -->
+    <div class="header-nav">
+        <div class="header-nav-container">
+            <div class="logo">🎯 AR Prototype</div>
+            <nav class="top-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="image-slider.html" class="nav-link">Image Slider</a>
+                <a href="3d-viewer.html" class="nav-link active">3D Viewer</a>
+                <a href="video-ar.html" class="nav-link">Video AR</a>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+
     <div class="container">
-        <header class="header">
-            <a href="simple-index.html" class="back-button">⬅ Kembali</a>
-            <div class="page-header">
-                <h1>🎨 3D Model AR</h1>
-                <p>Tampilkan model 3D dengan rotasi otomatis</p>
-            </div>
-        </header>
 
         <!-- Preview Section -->
         <main class="content" id="previewSection">
@@ -101,6 +112,31 @@
         stopARBtn.addEventListener('click', () => {
             arSection.classList.add('hidden');
             previewSection.classList.remove('hidden');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const topNav = document.querySelector('.top-nav');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            topNav.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.header-nav-container')) {
+                topNav.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                topNav.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            });
         });
     </script>
 </body>

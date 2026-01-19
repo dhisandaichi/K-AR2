@@ -1,42 +1,149 @@
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        // Mendapatkan referensi elemen
-        const target = document.querySelector('#target-video');
-        const video = document.querySelector('#vid');
+<!DOCTYPE html>
+<html lang="id">
 
-        // Event saat gambar target ditemukan (scan berhasil)
-        target.addEventListener("targetFound", event => {
-          console.log("Target ditemukan, memutar video...");
-          video.play();
-        });
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>AR Prototype - Home</title>
+  <link rel="stylesheet" href="simple-style.css">
+</head>
 
-        // Event saat gambar target hilang dari kamera
-        target.addEventListener("targetLost", event => {
-          console.log("Target hilang, video pause...");
-          video.pause();
-        });
+<body>
+  <!-- Header Navigation -->
+  <div class="header-nav">
+    <div class="header-nav-container">
+      <div class="logo">🎯 AR Prototype</div>
+      <nav class="top-nav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="image-slider.html" class="nav-link">Image Slider</a>
+        <a href="3d-viewer.html" class="nav-link">3D Viewer</a>
+        <a href="video-ar.html" class="nav-link">Video AR</a>
+      </nav>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <main class="content">
+      <div class="hero-section">
+        <h1 class="hero-title">Selamat Datang di AR Prototype</h1>
+        <p class="hero-subtitle">Pilih fitur AR yang ingin Anda coba</p>
+      </div>
+
+      <div class="menu-cards">
+        <a href="image-slider.html" class="menu-card">
+          <div class="menu-card-icon">📸</div>
+          <h2 class="menu-card-title">Image Slider AR</h2>
+          <p class="menu-card-description">
+            Tampilkan gambar "New Project (N)" dengan slider interaktif dan lihat dalam augmented reality
+          </p>
+          <div class="menu-card-footer">
+            <span class="menu-card-badge">9 Gambar</span>
+            <span class="menu-card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="3d-viewer.html" class="menu-card">
+          <div class="menu-card-icon">🎨</div>
+          <h2 class="menu-card-title">3D Viewer AR</h2>
+          <p class="menu-card-description">
+            Tampilkan model 3D GLB dengan rotasi otomatis dalam augmented reality
+          </p>
+          <div class="menu-card-footer">
+            <span class="menu-card-badge">Model GLB</span>
+            <span class="menu-card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="video-ar.html" class="menu-card">
+          <div class="menu-card-icon">🎬</div>
+          <h2 class="menu-card-title">Video AR</h2>
+          <p class="menu-card-description">
+            Putar video langsung dalam augmented reality dengan auto-play dan loop
+          </p>
+          <div class="menu-card-footer">
+            <span class="menu-card-badge">Video MP4</span>
+            <span class="menu-card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="info-section">
+        <h2>📱 Cara Menggunakan</h2>
+        <div class="steps-grid">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <h3>Pilih Menu</h3>
+            <p>Pilih salah satu fitur AR di atas</p>
+          </div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <h3>Start AR Mode</h3>
+            <p>Klik tombol "Start AR Mode"</p>
+          </div>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <h3>Izinkan Kamera</h3>
+            <p>Beri akses kamera saat diminta</p>
+          </div>
+          <div class="step-item">
+            <div class="step-number">4</div>
+            <h3>Scan Marker</h3>
+            <p>Arahkan ke marker targets.mind</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 Tips untuk Pengalaman AR Terbaik</h3>
+        <ul class="tips-list">
+          <li>Pastikan pencahayaan ruangan cukup</li>
+          <li>Jaga jarak kamera 30-50cm dari marker</li>
+          <li>Gunakan HTTPS untuk akses kamera (GitHub Pages auto-HTTPS)</li>
+          <li>Marker harus terlihat jelas dan tidak terlipat</li>
+          <li>Untuk hasil terbaik, gunakan browser Chrome atau Safari</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Powered by MindAR & A-Frame</p>
+      <p>© 2026 AR Prototype - Simple HTML/CSS/JS Version</p>
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const topNav = document.querySelector('.top-nav');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      topNav.classList.toggle('active');
+      mobileMenuToggle.classList.toggle('active');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.header-nav-container')) {
+        topNav.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+      }
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        topNav.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
       });
-    </script>
-  </head>
-  <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      
-      <a-assets>
-        <video id="vid" src="video.mp4" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
-      </a-assets>
+    });
+  </script>
+</body>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity mindar-image-target="targetIndex: 0" id="target-video">
-        <a-plane src="#vid" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-      </a-entity>
-      
-    </a-scene>
-  </body>
 </html>
