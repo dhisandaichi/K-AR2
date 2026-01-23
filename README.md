@@ -2,7 +2,6 @@
 
 Aplikasi prototype AR menggunakan React.js dengan 3 fitur utama:
 - **Image Slider AR** - Menampilkan gambar "New Project (N)" dalam AR
-- **3D Model AR** - Menampilkan model GLB 3D terbaru
 - **Video AR** - Menampilkan video dalam AR
 
 Semua fitur menggunakan file `targets.mind` yang sama untuk AR tracking.
@@ -62,7 +61,6 @@ testAR/
 ├── package.json            # Dependencies
 ├── targets.mind            # AR marker target (digunakan semua fitur)
 ├── New Project(7)(1-10).jpg # Gambar untuk Image Slider
-├── plusgroup*.glb          # Model 3D
 └── video.mp4               # Video untuk Video AR
 ```
 
@@ -86,12 +84,8 @@ testAR/
 - Preview mode dan AR mode
 - Semua gambar dapat ditampilkan di AR secara bergantian
 
-### 2. 3D Model AR
-- Menampilkan file GLB terbaru
-- Rotasi otomatis pada model 3D
-- Scale dan posisi yang dapat disesuaikan
 
-### 3. Video AR
+### 2. Video AR
 - Memutar video dalam AR
 - Auto-play dan loop
 - Video dengan aspect ratio 16:9
@@ -108,7 +102,6 @@ testAR/
 ## 📋 API Endpoints
 
 - `GET /api/images` - Mendapatkan daftar gambar
-- `GET /api/glb-latest` - Mendapatkan file GLB terbaru
 - `GET /api/video` - Mendapatkan file video
 - `GET /api/targets` - Mendapatkan file targets.mind
 
